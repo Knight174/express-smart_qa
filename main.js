@@ -4,8 +4,8 @@ const bodyParser = require("body-parser");
 const { log, table } = console;
 const { ReqInfo } = require("./utils/reqInfo");
 
-var mysql = require("mysql2");
-var connection = mysql.createConnection({
+const mysql = require("mysql2");
+const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "123456",
@@ -14,18 +14,6 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
-
-// const sql = "SELECT * FROM question";
-// //查
-// connection.query(sql, (err, result) => {
-//   if (err) {
-//     log("query failed: ", err.message);
-//   }
-//   log("---------------------SELECT---------------------");
-//   log(result);
-//   log("------------------------------------------------\n\n");
-// });
-// connection.end();
 
 app
   .use("/public", express.static("public"))
@@ -82,9 +70,9 @@ app.post("/questions", (req, res) => {
 
   connection.connect();
 
-  var addSql =
+  const addSql =
     "INSERT INTO question(content, answer, A, B, C, D, statistic_id) VALUES(?,?,?,?,?,?,3)";
-  var addSqlParams = [content, answer, A, B, C, D];
+  const addSqlParams = [content, answer, A, B, C, D];
   //增
   connection.query(addSql, addSqlParams, function (err, result) {
     if (err) {
@@ -110,7 +98,7 @@ app.delete("/questions/:id", (req, res) => {
 
   connection.connect();
 
-  var delSql = `DELETE FROM question where id=${id}`;
+  const delSql = `DELETE FROM question where id=${id}`;
   //删
   connection.query(delSql, function (err, result) {
     if (err) {
@@ -145,8 +133,8 @@ app.patch("/statistic", function userIdHandler(req, res) {
 
   connection.connect();
 
-  var modSql = `UPDATE statistic SET ${req.body.option} = ${req.body.option} + 1 WHERE question_id = ?`;
-  var modSqlParams = [req.query.qid];
+  const modSql = `UPDATE statistic SET ${req.body.option} = ${req.body.option} + 1 WHERE question_id = ?`;
+  const modSqlParams = [req.query.qid];
   connection.query(modSql, modSqlParams, function (err, result) {
     if (err) {
       console.log("[UPDATE ERROR] - ", err.message);
